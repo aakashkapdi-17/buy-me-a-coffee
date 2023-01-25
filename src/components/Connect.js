@@ -13,18 +13,7 @@ const Connect = () => {
       await provider.send("eth_requestAccounts", []).then((result) => {
         setWalletAddress(result[0]);
       });
-    } catch (e) {
-      toast.error(e.message, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    } catch (e) {}
   }
 
   return (
