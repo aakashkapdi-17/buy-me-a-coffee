@@ -1,9 +1,31 @@
 import React, { useContext } from "react";
 import { walletAddressContext } from "../pages/Home";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ethers } from "ethers";
 
 const Connect = () => {
   const { walletAddress, setWalletAddress } = useContext(walletAddressContext);
-  function connectWallet() {}
+
+  async function connectWallet() {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []).then((result) => {
+        setWalletAddress(result[0]);
+      });
+    } catch (e) {
+      toast.error(e.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
 
   return (
     <div>
@@ -14,6 +36,18 @@ const Connect = () => {
       >
         Connect Wallet
       </button>
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
